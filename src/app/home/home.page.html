@@ -1,20 +1,36 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Blank
+      <ion-button size="small" (click)="checkBluetothIsEnabled()">
+        <ion-icon name="bluetooth-outline"></ion-icon>
+      </ion-button>
+      <ion-button [disabled]="deviceIsConnected===false" size="small" (click)="disconnectDevice()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <ion-card *ngIf="devices.length">
+    <ion-card-header>
+      Dispositivos encontrados:
+    </ion-card-header>
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
-  </div>
+    <ion-list *ngFor="let device of devices">
+        <ion-button size="small" (click)="connectDevice(device)">
+        {{device.name}}
+        </ion-button>      
+    </ion-list>
+  </ion-card>
+  
+  <ion-card>
+    <ion-card-header>
+      TAGS encontradas:
+    </ion-card-header>
+
+    <div>
+        {{tags}}  
+    </div>
+  </ion-card>
 </ion-content>
