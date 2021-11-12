@@ -1,0 +1,6 @@
+{
+	"appId": "io.ionic.starter",
+	"appName": "TSL1128Reader",
+	"webDir": "www",
+	"bundledWebRuntime": false
+}

@@ -1,0 +1,7 @@
+{
+  "name": "TSL1128Reader",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
