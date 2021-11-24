@@ -98,7 +98,7 @@ constructor(
   }
 
   async getBatteryLevel(){
-      this.bluetooth.readUntil('.bl').then(
+      this.bluetooth.readUntil('.iv').then(
         data => {
         this.battery = data;
         console.log('Bateria ', data);
