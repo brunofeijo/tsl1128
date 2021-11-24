@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 export class Tags {
-    CS: string;
-    EP: string;
-    OK: string;
+    CS: any;
+    EP: any;
+    OK: any;
+    ME: any;
 }

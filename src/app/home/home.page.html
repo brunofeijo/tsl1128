@@ -4,8 +4,11 @@
       <ion-button size="small" (click)="checkBluetothIsEnabled()">
         <ion-icon name="bluetooth-outline"></ion-icon>
       </ion-button>
-      <ion-button [disabled]="deviceIsConnected===false" size="small" (click)="disconnectDevice()">
+      <ion-button [disabled]="deviceIsConnected" size="small" (click)="disconnectDevice()">
         <ion-icon name="close"></ion-icon>
+      </ion-button>
+      <ion-button [disabled]="deviceIsConnected" size="small" (click)="getBatteryLevel()">
+        <ion-icon name="battery-charging"></ion-icon>
       </ion-button>
     </ion-title>
   </ion-toolbar>
@@ -24,13 +27,13 @@
     </ion-list>
   </ion-card>
   
-  <ion-card>
+  <ion-card *ngIf="tags">
     <ion-card-header>
       TAGS encontradas:
     </ion-card-header>
 
-    <div>
-        {{tags}}  
-    </div>
+        {{tags}}<br>
+        {{battery}}  
+    
   </ion-card>
 </ion-content>
