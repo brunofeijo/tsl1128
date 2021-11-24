@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-inferrable-types */
-/* eslint-disable @typescript-eslint/quotes */
 /* eslint-disable no-trailing-spaces */
 import { Component } from '@angular/core';
 import { BluetoothSerial } from '@ionic-native/bluetooth-serial/ngx';
@@ -8,8 +6,7 @@ import { Tags } from '../model/tags';
 import { LoaderBoxService } from '../util/loader-box.service';
 import { MessageBoxService } from '../util/message-box.service';
 import { ToastBoxService } from '../util/toast-box.service';
-import { Observable, observable, Subscription } from 'rxjs';
-import { typeofExpr } from '@angular/compiler/src/output/output_ast';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -18,18 +15,16 @@ import { typeofExpr } from '@angular/compiler/src/output/output_ast';
   providers: [BluetoothSerial, Devices]
 })
 export class HomePage {
-    public deviceIsConected: boolean = false;
+    public deviceIsConected: boolean;
     public devices = Devices;
-    public tags: any;
-    public battery: string;
-    public tag = [];
+    public tags: Array<any> = [];
+    public subscription1$: Subscription;
 
 constructor(
     public bluetooth: BluetoothSerial,
     public msgBox: MessageBoxService,
     public toastBox: ToastBoxService,
     public loadingBox: LoaderBoxService,
-    
   ) {}
 
   public checkBluetothIsEnabled() {
@@ -63,6 +58,15 @@ constructor(
         this.devices = data;
       }
     );
+    this.bluetooth.discoverUnpaired().then(
+      data => {
+        console.log(data);
+        this.devices = data;
+      },
+      error => {
+      console.log(error);
+      }
+    );
   }
 
   public connectDevice(device){
@@ -75,6 +79,7 @@ constructor(
           this.clearDevices();
         }
         this.toastBox.presentToast('Dispositivo conectado!');
+        this.startInvetorying();
       },
     error => {
       console.log(error);
@@ -97,38 +102,21 @@ constructor(
     );
   }
 
-  async getBatteryLevel(){
-      this.bluetooth.readUntil('.iv').then(
-        data => {
-        this.battery = data;
-        console.log('Bateria ', data);
+  public startInvetorying(){
+    this.subscription1$ = this.bluetooth.subscribe('.iv').subscribe(
+      data => {
+       this.tags = data;
+       console.log(data);
+       if(this.tags.includes('OK')){
+        console.log('Teste'); 
+        this.subscription1$.unsubscribe();
+       }
       }
     );
-    console.log("chegou 3");
-    await this.bluetooth.subscribe('.bl').subscribe().unsubscribe();
-  }
-
-  public tslData():Observable<any> {
-    return this.bluetooth.subscribe('.iv');
-  }
-
-  public startInvetorying(){
-    this.tslData().subscribe(
-      data => {
-        this.tags = data;
-        console.log('Dentro do observable ' + this.tags);
-      },
-      error => {
-        console.log(error);
-      }
-    )
-    if(this.tags){
-      this.tslData().subscribe().unsubscribe();
-    }
-    console.log('Fora do observable ' + this.tags);
-  }
-
+    console.log();
+  } 
   
-  
+
+
 
 }
